@@ -8,8 +8,9 @@ pygame.init()
 WIDTH, HEIGHT = 800, 600
 FPS = 60
 PLAYER_SPEED = 5
-CELL_SIZE = 40
-NUM_COLLECTIBLES = 5
+PLAYER_SIZE = 15
+CELL_SIZE = 25
+NUM_COLLECTIBLES = 15
 
 # Colors
 WHITE = (255, 255, 255)
@@ -51,16 +52,16 @@ def reset_game():
     for y in range(len(maze_grid)):
         for x in range(len(maze_grid[0])):
             if maze_grid[y][x] == 0:
-                player = pygame.Rect(x * CELL_SIZE + CELL_SIZE // 4, y * CELL_SIZE + CELL_SIZE // 4, 30, 30)
+                player = pygame.Rect(x * CELL_SIZE + CELL_SIZE // 2 - PLAYER_SIZE // 2, y * CELL_SIZE + CELL_SIZE // 2 - PLAYER_SIZE // 2, PLAYER_SIZE, PLAYER_SIZE)
                 break
         else:
             continue
         break
     
     while len(collectibles) < NUM_COLLECTIBLES:
-        x, y = random.randint(0, WIDTH // CELL_SIZE - 1), random.randint(0, HEIGHT // CELL_SIZE - 1)
+        x, y = random.randint(0, WIDTH // CELL_SIZE - 2), random.randint(0, HEIGHT // CELL_SIZE - 2)
         if maze_grid[y][x] == 0:
-            collectibles.append(pygame.Rect(x * CELL_SIZE + CELL_SIZE // 2, y * CELL_SIZE + CELL_SIZE // 2, 10, 10))
+            collectibles.append(pygame.Rect(x * CELL_SIZE + CELL_SIZE // 2 - PLAYER_SIZE // 2, y * CELL_SIZE + CELL_SIZE // 2 - PLAYER_SIZE // 2, PLAYER_SIZE, PLAYER_SIZE))
 
 # Initialize game
 score = 0
@@ -114,11 +115,13 @@ while running:
         pygame.draw.ellipse(screen, RED, collectible)
     
     # Display score and level exits
-    font = pygame.font.Font(None, 36)
-    score_text = font.render(f"Score: {score}", True, YELLOW)
-    exit_text = font.render(f"Level Exits: {level_exits}", True, YELLOW)
-    screen.blit(score_text, (10, 10))
-    screen.blit(exit_text, (10, HEIGHT-30))
+    # font = pygame.font.Font(None, 36)
+    # score_text = font.render(f"Score: {score}", True, YELLOW)
+    # exit_text = font.render(f"Level: {level_exits+1}", True, YELLOW)
+    # screen.blit(score_text, (10, 10))
+    # screen.blit(exit_text, (10, HEIGHT-30))
+
+    pygame.display.set_caption("Simple 2D Maze Game - " + f"Level: {level_exits+1} - " + f"Score: {score}")
     
     pygame.display.flip()
 
